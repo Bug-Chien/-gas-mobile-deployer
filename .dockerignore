@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.env
+.env.local
+*.log
+err*.log
+out.log
+prisma/dev.db
+prisma/dev.db-journal
+.claude
+.vscode

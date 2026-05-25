@@ -1,0 +1,58 @@
+// Sprint 0 PoC schema — SQLite。Sprint 1 起切換 Supabase Postgres。
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(cuid())
+  googleSub  String   @unique
+  email      String
+  name       String?
+  avatarUrl  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  tokens     OAuthToken[]
+}
+
+model OAuthToken {
+  id                     String   @id @default(cuid())
+  userId                 String
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider               String   @default("google")
+  encryptedRefreshToken  String   // AES-256-GCM (iv:tag:ciphertext base64)
+  scope                  String
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  @@unique([userId, provider])
+}
+
+model ScriptProject {
+  id            String   @id @default(cuid())
+  userId        String
+  scriptId      String
+  title         String
+  templateId    String?
+  lastOpenedAt  DateTime @default(now())
+  lastSyncedAt  DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  snapshots     ProjectSnapshot[]
+  @@unique([userId, scriptId])
+  @@index([userId, lastOpenedAt])
+}
+
+model ProjectSnapshot {
+  id         String   @id @default(cuid())
+  projectId  String
+  project    ScriptProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  reason     String   // "open" | "pre_save" | "post_save" | "manual"
+  files      String   // JSON-serialized GasApiFile[]
+  createdAt  DateTime @default(now())
+  @@index([projectId, createdAt])
+}

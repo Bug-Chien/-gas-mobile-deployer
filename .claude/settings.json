@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm:*)",
+      "Bash(npx:*)",
+      "Bash(npm:*)",
+      "Bash(node:*)",
+      "Bash(git:*)",
+      "Bash(corepack:*)",
+      "PowerShell(pnpm:*)",
+      "PowerShell(npx:*)",
+      "PowerShell(npm:*)",
+      "PowerShell(node:*)",
+      "PowerShell(git:*)",
+      "PowerShell(corepack:*)",
+      "PowerShell(gcloud config list)",
+      "PowerShell(gcloud config get-value*)",
+      "PowerShell(gcloud config set project*)",
+      "PowerShell(gcloud auth list)",
+      "PowerShell(gcloud auth application-default print-access-token)",
+      "PowerShell(gcloud projects list*)",
+      "PowerShell(gcloud projects describe*)",
+      "PowerShell(gcloud projects create*)",
+      "PowerShell(gcloud services list*)",
+      "PowerShell(gcloud services enable script.googleapis.com*)",
+      "PowerShell(gcloud services enable iamcredentials.googleapis.com*)"
+    ],
+    "deny": [
+      "PowerShell(gcloud iam*)",
+      "PowerShell(gcloud secrets*)",
+      "PowerShell(gcloud projects delete*)",
+      "PowerShell(gcloud auth revoke*)",
+      "PowerShell(gcloud auth login*)",
+      "PowerShell(gcloud organizations*)",
+      "PowerShell(gcloud billing*)",
+      "PowerShell(gcloud services disable*)",
+      "Bash(gcloud iam*)",
+      "Bash(gcloud secrets*)",
+      "Bash(gcloud projects delete*)",
+      "Bash(gcloud auth revoke*)"
+    ]
+  }
+}
