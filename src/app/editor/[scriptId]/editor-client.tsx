@@ -9,6 +9,7 @@ import { json } from '@codemirror/lang-json';
 import { toDisplayName, fromDisplayName, DEFAULT_MANIFEST } from '@/lib/gas/file-mapper';
 import { ManifestForm } from './_components/manifest-form';
 import { TriggerDialog } from './_components/trigger-dialog';
+import { RunPanel } from './_components/run-panel';
 
 type GasFile = { name: string; type: 'SERVER_JS' | 'HTML' | 'JSON'; source: string };
 
@@ -43,6 +44,7 @@ export function EditorClient({ scriptId, initialTitle, initialFiles, initialUpda
   const [showFiles, setShowFiles] = useState(false);
   const [manifestView, setManifestView] = useState<'form' | 'raw'>('form');
   const [showTrigger, setShowTrigger] = useState(false);
+  const [showRun, setShowRun] = useState(false);
   const [triggerHint, setTriggerHint] = useState<string | null>(null);
 
   const active = files[activeIdx];
@@ -199,6 +201,7 @@ export function EditorClient({ scriptId, initialTitle, initialFiles, initialUpda
               <button onClick={handleAddManifest} className="rounded-md border px-2 py-1 text-xs text-amber-700">+ 補上 appsscript.json</button>
             )}
             <button onClick={() => setShowTrigger(true)} className="rounded-md border px-2 py-1 text-xs">+ 新增觸發器</button>
+            <button onClick={() => setShowRun(true)} className="rounded-md border px-2 py-1 text-xs">▶ 執行函式</button>
             <a
               href={`https://script.google.com/d/${scriptId}/edit`}
               target="_blank"
@@ -263,6 +266,8 @@ export function EditorClient({ scriptId, initialTitle, initialFiles, initialUpda
           {msg.text}
         </div>
       )}
+      <RunPanel scriptId={scriptId} files={files} open={showRun} onClose={() => setShowRun(false)} />
+
       <TriggerDialog
         scriptId={scriptId}
         files={files}
