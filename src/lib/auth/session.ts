@@ -1,6 +1,7 @@
 import 'server-only';
 import { cookies } from 'next/headers';
 import { getIronSession, type SessionOptions } from 'iron-session';
+import { requireSessionPassword } from './session-password';
 
 export type SessionData = {
   userId?: string;
@@ -8,8 +9,7 @@ export type SessionData = {
   name?: string;
 };
 
-const options: SessionOptions = {
-  password: process.env.SESSION_PASSWORD || 'dev-password-please-set-32-chars-min',
+const options: Omit<SessionOptions, 'password'> = {
   cookieName: 'gas_mobile_session',
   cookieOptions: {
     httpOnly: true,
@@ -19,6 +19,7 @@ const options: SessionOptions = {
 };
 
 export async function getSession() {
+  const password = requireSessionPassword(process.env.SESSION_PASSWORD);
   const cookieStore = await cookies();
-  return getIronSession<SessionData>(cookieStore, options);
+  return getIronSession<SessionData>(cookieStore, { ...options, password });
 }
